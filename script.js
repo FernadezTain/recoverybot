@@ -33,37 +33,24 @@ card.addEventListener("mouseleave", () => {
 // Навигация между меню
 // ======================
 
-// Главное → ввод кода
+// Переход к вводу кода
 continueBtn.addEventListener("click", () => {
-    card.classList.remove("active-bot");
+    card.classList.remove("active-bot", "active-code"); // сначала убираем всё
     card.classList.add("active-code");
 });
 
-// Ввод кода → назад в главное меню
+// Назад в главное меню
 backBtn.addEventListener("click", () => {
     card.classList.remove("active-code", "active-bot");
 });
 
 // Меню ботов → возврат в ввод кода
 botBackBtn.addEventListener("click", () => {
-    card.classList.remove("active-bot");
-    card.classList.add("active-code");
+    card.classList.remove("active-bot", "active-code"); // очищаем классы
+    card.classList.add("active-code"); // показываем только ввод кода
 });
 
-// ======================
-// Ввод кода: красная → зеленая кнопка
-// ======================
-codeInput.addEventListener("input", () => {
-    if (codeInput.value.length > 0) {
-        verifyBtn.classList.add("green");
-    } else {
-        verifyBtn.classList.remove("green");
-    }
-});
-
-// ======================
-// Проверка кода и вход
-// ======================
+// Проверка кода и переход к меню ботов
 verifyBtn.addEventListener("click", () => {
     const code = codeInput.value.trim().toUpperCase();
 
@@ -74,7 +61,7 @@ verifyBtn.addEventListener("click", () => {
                 currentUser = data[code];
                 showBotMenu(currentUser);
 
-                // 💎 Показ уведомления стекло
+                // Уведомление
                 showNotification(
                     "Выполнен вход в систему",
                     `Пользователь: ${currentUser.name}`
@@ -86,9 +73,7 @@ verifyBtn.addEventListener("click", () => {
         .catch((err) => console.error("Ошибка загрузки vrs.json:", err));
 });
 
-// ======================
 // Показ меню ботов
-// ======================
 function showBotMenu(user) {
     botButtons.innerHTML = "";
 
@@ -105,10 +90,13 @@ function showBotMenu(user) {
         botButtons.appendChild(btn);
     }
 
-    // Переход к меню ботов
-    card.classList.remove("active-code");
-    card.classList.add("active-bot");
+    // Убираем все предыдущие классы, показываем только меню ботов
+    card.classList.remove("active-code", "active-bot");
+    setTimeout(() => {
+        card.classList.add("active-bot");
+    }, 10); // небольшой таймаут для правильного рендера анимации
 }
+
 
 // ======================
 // Уведомления стекло
