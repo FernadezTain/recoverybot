@@ -18,9 +18,10 @@ body {
     perspective: 1400px;
 }
 
+/* Основной блок */
 .card {
     width: 460px;
-    height: 280px;
+    height: 300px;
     background: linear-gradient(145deg, #0e0e0e, #1b1b1b);
     border-radius: 20px;
     box-shadow:
@@ -32,7 +33,7 @@ body {
     transition: transform 0.15s ease;
 }
 
-/* Общий стиль лиц */
+/* Все «лица» блока */
 .card-face {
     position: absolute;
     inset: 0;
@@ -45,64 +46,81 @@ body {
     transition: all 0.5s cubic-bezier(.4,0,.2,1);
 }
 
-/* Левая часть */
-.card-main {
-    transform: translateX(0);
-}
+/* Главное меню */
+.card-main { transform: translateX(0); }
 
-/* Правая часть */
-.card-confirm {
-    transform: translateX(100%);
-    text-align: center;
-}
+/* Ввод кода */
+.card-code { transform: translateX(100%); text-align: center; }
 
-/* Активное состояние */
-.card.active .card-main {
+/* Меню ботов */
+.card-bot { transform: translateX(100%); text-align: center; }
+
+/* Активные состояния */
+.card.active-code .card-main {
     transform: translateX(-120%);
     opacity: 0;
     filter: blur(6px);
 }
+.card.active-code .card-code { transform: translateX(0); }
 
-.card.active .card-confirm {
-    transform: translateX(0);
+.card.active-bot .card-code {
+    transform: translateX(-120%);
+    opacity: 0;
+    filter: blur(6px);
 }
+.card.active-bot .card-bot { transform: translateX(0); }
 
-/* Текст */
-h1, h2 {
-    color: #fff;
-}
+/* Тексты */
+h1, h2 { color: #fff; }
+p { color: #aaa; font-size: 15px; }
+.desc { font-size: 14px; line-height: 1.4; text-align: center; }
 
-p {
-    color: #aaa;
-    font-size: 15px;
-}
-
-.desc {
+/* Поле ввода */
+input {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    width: 70%;
+    text-align: center;
     font-size: 14px;
-    line-height: 1.4;
 }
 
-/* Кнопки */
+/* Контейнер кнопок */
+.buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Общие кнопки */
 .btn {
-    margin-top: 12px;
-    padding: 10px 28px;
+    padding: 10px 26px;
     border-radius: 12px;
     border: none;
     background: #fff;
     color: #000;
     font-weight: 600;
     cursor: pointer;
+    transition: 0.2s;
 }
+.btn:hover { background: #e5e5e5; }
 
-.btn:hover {
-    background: #e5e5e5;
-}
-
+/* Красные / подтверждающие кнопки */
 .btn.danger {
     background: #ff3b3b;
     color: #fff;
 }
+.btn.danger.green { background: #00c853; }
+.btn.danger:hover { background: #e13232; }
 
-.btn.danger:hover {
-    background: #e13232;
+/* Блок выбора бота */
+.card-bot .btn {
+    width: 140px;
+    margin: 6px 0;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+.card-bot .btn:hover {
+    transform: scale(1.05);
 }
