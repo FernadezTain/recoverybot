@@ -30,10 +30,11 @@ body {
         0 50px 100px rgba(0, 0, 0, 0.85),
         inset 0 0 0 1px rgba(255, 255, 255, 0.05);
     position: relative;
-    overflow: hidden;
+    overflow: visible; /* раньше было hidden */
     transform-style: preserve-3d;
     transition: transform 0.15s ease;
 }
+
 
 /* Все «лица» блока */
 .card-face {
