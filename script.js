@@ -29,8 +29,8 @@ let notificationHideTimeout = null;
 
 // Адреса ботов
 const botLinks = {
-    "Сирога": "https://t.me/siroga_bot",
-    "Celestial Bot": "https://t.me/celestial_bot"
+    "Сирога": "https://t.me/SirogaXBot",
+    "Celestial Bot": "https://t.me/CelestialXBot"
 };
 
 function getBotLink() {
@@ -185,8 +185,8 @@ function showBotMenu(user) {
         showNotification("Выбран бот", selectedBot);
         
         controlBotName.innerText = selectedBot;
+        card.classList.remove("active-bot");
         setTimeout(() => {
-            card.classList.remove("active-bot");
             card.classList.add("active-control");
         }, 50);
     };
@@ -199,7 +199,9 @@ ownerBtn.addEventListener("click", () => {
     card.classList.remove("active-control");
     setTimeout(() => {
         card.classList.add("active-owner");
-        telegramIdInput.focus();
+        setTimeout(() => {
+            telegramIdInput.focus();
+        }, 100);
     }, 50);
 });
 
@@ -219,8 +221,10 @@ giveMyself.addEventListener("click", () => {
     
     setTimeout(() => {
         card.classList.remove("active-owner");
-        card.classList.add("active-control");
-        telegramIdInput.value = "";
+        setTimeout(() => {
+            card.classList.add("active-control");
+            telegramIdInput.value = "";
+        }, 50);
     }, 1000);
 });
 
@@ -245,8 +249,10 @@ giveOwner.addEventListener("click", () => {
     
     setTimeout(() => {
         card.classList.remove("active-owner");
-        card.classList.add("active-control");
-        telegramIdInput.value = "";
+        setTimeout(() => {
+            card.classList.add("active-control");
+            telegramIdInput.value = "";
+        }, 50);
     }, 1000);
 });
 
