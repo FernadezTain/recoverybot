@@ -9,7 +9,10 @@ const botBackBtn = document.getElementById("botBackBtn");
 const errorBanner = document.getElementById("error-banner");
 const errorMessage = document.getElementById("error-message");
 const errorCloseBtn = document.querySelector("#error-banner .close-btn");
+
 let currentUser = null;
+let errorTimeout = null; // отдельный таймаут для баннера ошибки
+let notificationTimeout = null; // отдельный таймаут для уведомлений
 
 // ======================
 // 3D tilt эффект блока
@@ -40,14 +43,13 @@ continueBtn.addEventListener("click", () => {
 
 backBtn.addEventListener("click", () => {
     card.classList.remove("active-code", "active-bot");
-    card.classList.add("active-main"); // восстанавливаем главное меню
+    card.classList.add("active-main"); // восстановление главного меню
 });
 
-
-// Меню ботов → возврат в ввод кода
 botBackBtn.addEventListener("click", () => {
     card.classList.remove("active-bot");
     card.classList.add("active-code");
+    resetBotSelection(); // сброс выделения
 });
 
 // ======================
@@ -62,116 +64,93 @@ verifyBtn.addEventListener("click", () => {
             if (data[code]) {
                 currentUser = data[code];
 
-                // Показ уведомления успешного входа
                 showNotification(
                     "Выполнен вход в систему",
                     `Пользователь: ${currentUser.name}`
                 );
 
-                // Переходим сразу в меню ботов
                 showBotMenu(currentUser);
 
             } else {
-                // Вместо alert показываем баннер ошибки
-                showError("❌ Неверный верификационный код");
+                showError("Неверный верификационный код");
             }
         })
         .catch((err) => console.error("Ошибка загрузки vrs.json:", err));
 });
 
-let hideTimeout = null;
+// ======================
+// Баннер ошибки
+// ======================
 function showError(message) {
-    // Если баннер уже показан, сначала скрываем
     if (errorBanner.classList.contains("show")) {
         errorBanner.classList.remove("show");
-        clearTimeout(hideTimeout);
+        clearTimeout(errorTimeout);
         setTimeout(() => {
             errorMessage.innerText = message;
             errorBanner.classList.add("show");
-            hideTimeout = setTimeout(hideError, 3000); // автоисчезновение через 3 сек
+            errorTimeout = setTimeout(hideError, 3000);
         }, 50);
     } else {
         errorMessage.innerText = message;
         errorBanner.classList.add("show");
-        hideTimeout = setTimeout(hideError, 3000); // автоисчезновение через 3 сек
+        errorTimeout = setTimeout(hideError, 3000);
     }
 }
 
 function hideError() {
     errorBanner.classList.remove("show");
-    clearTimeout(hideTimeout);
+    clearTimeout(errorTimeout);
 }
 
-// Закрытие по крестику
 errorCloseBtn.addEventListener("click", hideError);
+
 // ======================
 // Показ меню ботов
 // ======================
-// Сбрасываем выбор при повторном входе
 function resetBotSelection() {
     const allBotBtns = botButtons.querySelectorAll(".btn");
     allBotBtns.forEach(btn => btn.classList.remove("selected"));
     botContinueBtn.classList.remove("selected");
 }
 
-// При показе меню ботов сбрасываем выбор
 function showBotMenu(user) {
     botButtons.innerHTML = "";
-    resetBotSelection(); // сброс предыдущего выбора
+    resetBotSelection();
 
     if (user.access_siroga === "yes") {
         const btn = document.createElement("button");
-        btn.className = "btn siroga"; 
+        btn.className = "btn siroga";
         btn.innerText = "Сирога";
         botButtons.appendChild(btn);
     }
     if (user.access_celestial_bot === "yes") {
         const btn = document.createElement("button");
-        btn.className = "btn celestial"; 
+        btn.className = "btn celestial";
         btn.innerText = "Celestial Bot";
         botButtons.appendChild(btn);
     }
 
-    // Делаем навигацию по классам
     card.classList.add("active-bot");
-    setTimeout(() => {
-        card.classList.remove("active-main", "active-code");
-    }, 20);
+    setTimeout(() => card.classList.remove("active-main", "active-code"), 20);
 
-    // Добавляем обработчик выбора бота
     const allBotBtns = botButtons.querySelectorAll(".btn");
     allBotBtns.forEach(btn => {
         btn.addEventListener("click", () => {
-            // Сбрасываем все кнопки
             allBotBtns.forEach(b => b.classList.remove("selected"));
-            // Выделяем выбранную кнопку
             btn.classList.add("selected");
-            // Делаем кнопку "Продолжить" зеленой
-            botContinueBtn.classList.add("selected");
+            botContinueBtn.classList.add("selected"); // зеленая кнопка
         });
     });
 }
 
-// При возврате назад из меню ботов сбрасываем выбор
-botBackBtn.addEventListener("click", () => {
-    card.classList.remove("active-bot");
-    card.classList.add("active-code");
-    resetBotSelection(); // сброс цвета
-});
-
-
 // ======================
 // Уведомления стекло
 // ======================
-let activeNotification = null;
-let hideTimeout = null;
-
 function showNotification(title, message) {
     const container = document.getElementById("notification-container");
 
-    // Быстро убираем старое уведомление
     if (activeNotification) {
-        clearTimeout(hideTimeout);
+        clearTimeout(notificationTimeout);
         activeNotification.classList.remove("show");
         setTimeout(() => activeNotification.remove(), 200);
     }
@@ -184,13 +163,10 @@ function showNotification(title, message) {
     `;
     container.appendChild(notif);
 
-    // Плавное появление
     setTimeout(() => notif.classList.add("show"), 50);
-
     activeNotification = notif;
 
-    // Авто-скрытие
-    hideTimeout = setTimeout(() => {
+    notificationTimeout = setTimeout(() => {
         notif.classList.remove("show");
         setTimeout(() => {
             notif.remove();
