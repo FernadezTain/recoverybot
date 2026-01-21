@@ -5,10 +5,17 @@
     "access_siroga": "yes",
     "access_celestial_bot": "yes"
   },
-  "EWLEB3L29VL5M1NW92M": {
+  "X7J9L2K5Q8M1N4R": {
+    "name": "Поднебесный",
+    "status": "Owner",
+    "access_siroga": "yes",
+    "access_celestial_bot": "yes"
+  },
+  "Q8VJ3M6LZ9R2X5S": {
     "name": "Сирога",
     "status": "Admin",
     "access_siroga": "yes",
     "access_celestial_bot": "no"
   }
 }
+
