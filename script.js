@@ -93,12 +93,14 @@ function showBotMenu(user) {
         botButtons.appendChild(btn);
     }
 
-    // Убираем все классы состояния, кроме active-bot
-    card.classList.remove("active-main", "active-code", "active-bot");
-    // Немного таймаута для плавного рендера
+    // Правильный порядок классов: сначала активируем .active-bot
+    card.classList.add("active-bot");
+
+    // Убираем старые состояния (главное меню и ввод кода) через небольшую задержку,
+    // чтобы сработал эффект сдвига и размытия
     setTimeout(() => {
-        card.classList.add("active-bot");
-    }, 10);
+        card.classList.remove("active-main", "active-code");
+    }, 20);
 }
 
 
