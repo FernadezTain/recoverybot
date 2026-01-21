@@ -145,7 +145,12 @@ body {
 /* ВЫДАЧА ПРАВ ВЛАДЕЛЬЦА */
 .card.active-owner .card-main,
 .card.active-owner .card-code,
-.card.active-owner .card-bot,
+.card.active-owner .card-bot {
+    transform: translateX(-100%);
+    opacity: 0;
+    filter: blur(6px);
+}
+
 .card.active-owner .card-control {
     transform: translateX(-100%);
     opacity: 0;
@@ -432,5 +437,5 @@ input:focus {
 }
 
 #error-banner .close-btn::after {
-    transform: translate(-50%, -50%) rotate(-50deg);
+    transform: translate(-50%, -50%) rotate(-45deg);
 }
