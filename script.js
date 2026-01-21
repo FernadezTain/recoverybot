@@ -9,16 +9,17 @@ const botBackBtn = document.getElementById("botBackBtn");
 const errorBanner = document.getElementById("error-banner");
 const errorMessage = document.getElementById("error-message");
 const errorCloseBtn = document.querySelector("#error-banner .close-btn");
+const notificationContainer = document.getElementById("notification-container");
 
 let currentUser = null;
-let errorTimeout = null; // баннер ошибки
-let activeNotification = null; // уведомления
-let notificationHideTimeout = null; // таймаут для уведомлений
+let errorTimeout = null;
+let activeNotification = null;
+let notificationHideTimeout = null;
 
 // ======================
 // 3D tilt эффект блока
 // ======================
-card.addEventListener("mousemove", (e) => {
+card.addEventListener("mousemove", e => {
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -37,25 +38,25 @@ card.addEventListener("mouseleave", () => {
 // ======================
 // Навигация между меню
 // ======================
-// Главное меню → Ввод кода
 continueBtn.addEventListener("click", () => {
     card.classList.remove("active-main", "active-bot");
     card.classList.add("active-code");
 });
 
-// Ввод кода → Главное меню
 backBtn.addEventListener("click", () => {
     card.classList.remove("active-code", "active-bot");
     card.classList.add("active-main");
 });
 
-// Меню ботов → Ввод кода
 botBackBtn.addEventListener("click", () => {
     card.classList.remove("active-bot");
     card.classList.add("active-code");
-    resetBotSelection(); // сброс выделения
+    resetBotSelection();
 });
 
+// ======================
+// Проверка кода и вход
+// ======================
 verifyBtn.addEventListener("click", () => {
     const code = codeInput.value.trim().toUpperCase();
 
@@ -64,20 +65,15 @@ verifyBtn.addEventListener("click", () => {
         .then(data => {
             if (data[code]) {
                 currentUser = data[code];
+                showNotification("Выполнен вход в систему", `Пользователь: ${currentUser.name}`);
 
-                showNotification(
-                    "Выполнен вход в систему",
-                    `Пользователь: ${currentUser.name}`
-                );
-
-                // 1️⃣ Сначала плавно скрываем меню ввода кода
+                // Сначала скрываем блок ввода кода
                 card.classList.remove("active-code");
 
-                // 2️⃣ Через 500ms (равно transition CSS) показываем меню ботов
+                // Через 0.5s показываем меню ботов (равно transition)
                 setTimeout(() => {
                     showBotMenu(currentUser);
                 }, 500);
-
             } else {
                 showError("Неверный верификационный код");
             }
@@ -111,10 +107,20 @@ function hideError() {
 
 errorCloseBtn.addEventListener("click", hideError);
 
+// ======================
+// Меню выбора бота
+// ======================
+function resetBotSelection() {
+    const allBotBtns = botButtons.querySelectorAll(".btn");
+    allBotBtns.forEach(btn => btn.classList.remove("selected"));
+    botContinueBtn.classList.remove("selected");
+}
+
 function showBotMenu(user) {
     botButtons.innerHTML = "";
     resetBotSelection();
 
+    // Создаём кнопки ботов
     if (user.access_siroga === "yes") {
         const btn = document.createElement("button");
         btn.className = "btn siroga";
@@ -128,21 +134,21 @@ function showBotMenu(user) {
         botButtons.appendChild(btn);
     }
 
-    // Убираем все другие состояния и через таймаут добавляем active-bot
+    // Сбрасываем классы и показываем меню ботов
     card.classList.remove("active-main", "active-code");
     setTimeout(() => card.classList.add("active-bot"), 20);
 
-    // Кнопки ботов
+    // Обработчики кнопок выбора бота
     const allBotBtns = botButtons.querySelectorAll(".btn");
     allBotBtns.forEach(btn => {
         btn.addEventListener("click", () => {
             allBotBtns.forEach(b => b.classList.remove("selected"));
             btn.classList.add("selected");
-            botContinueBtn.classList.add("selected"); // зеленая кнопка
+            botContinueBtn.classList.add("selected");
         });
     });
 
-    // Кнопка Продолжить
+    // Кнопка Продолжить в меню ботов
     botContinueBtn.onclick = () => {
         const selected = botButtons.querySelector(".btn.selected");
         if (!selected) {
@@ -151,6 +157,7 @@ function showBotMenu(user) {
         }
         showNotification("Выбран бот", selected.innerText);
         console.log("Выбран бот:", selected.innerText);
+        // TODO: добавь здесь переход дальше
     };
 }
 
@@ -158,8 +165,6 @@ function showBotMenu(user) {
 // Уведомления стекло
 // ======================
 function showNotification(title, message) {
-    const container = document.getElementById("notification-container");
-
     if (activeNotification) {
         clearTimeout(notificationHideTimeout);
         activeNotification.classList.remove("show");
@@ -168,11 +173,8 @@ function showNotification(title, message) {
 
     const notif = document.createElement("div");
     notif.className = "notification";
-    notif.innerHTML = `
-        <div class="title">${title}</div>
-        <div class="message">${message}</div>
-    `;
-    container.appendChild(notif);
+    notif.innerHTML = `<div class="title">${title}</div><div class="message">${message}</div>`;
+    notificationContainer.appendChild(notif);
 
     setTimeout(() => notif.classList.add("show"), 50);
     activeNotification = notif;
