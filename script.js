@@ -56,12 +56,6 @@ botBackBtn.addEventListener("click", () => {
     resetBotSelection(); // сброс выделения
 });
 
-// ======================
-// Проверка кода и вход
-// ======================
-// ======================
-// Проверка кода и вход
-// ======================
 verifyBtn.addEventListener("click", () => {
     const code = codeInput.value.trim().toUpperCase();
 
@@ -76,20 +70,20 @@ verifyBtn.addEventListener("click", () => {
                     `Пользователь: ${currentUser.name}`
                 );
 
-                // Плавно скрываем блок ввода кода
+                // 1️⃣ Сначала плавно скрываем меню ввода кода
                 card.classList.remove("active-code");
 
-                // Через время, равное transition (0.5s), показываем меню ботов
+                // 2️⃣ Через 500ms (равно transition CSS) показываем меню ботов
                 setTimeout(() => {
                     showBotMenu(currentUser);
                 }, 500);
+
             } else {
                 showError("Неверный верификационный код");
             }
         })
         .catch(err => console.error("Ошибка загрузки vrs.json:", err));
 });
-
 
 // ======================
 // Баннер ошибки
@@ -117,9 +111,6 @@ function hideError() {
 
 errorCloseBtn.addEventListener("click", hideError);
 
-// ======================
-// Показ меню ботов
-// ======================
 function showBotMenu(user) {
     botButtons.innerHTML = "";
     resetBotSelection();
@@ -137,11 +128,11 @@ function showBotMenu(user) {
         botButtons.appendChild(btn);
     }
 
-    // Сначала убираем все остальные классы, потом включаем .active-bot
+    // Убираем все другие состояния и через таймаут добавляем active-bot
     card.classList.remove("active-main", "active-code");
     setTimeout(() => card.classList.add("active-bot"), 20);
 
-    // Обработчики выбора бота
+    // Кнопки ботов
     const allBotBtns = botButtons.querySelectorAll(".btn");
     allBotBtns.forEach(btn => {
         btn.addEventListener("click", () => {
@@ -151,7 +142,7 @@ function showBotMenu(user) {
         });
     });
 
-    // Кнопка Продолжить в меню ботов
+    // Кнопка Продолжить
     botContinueBtn.onclick = () => {
         const selected = botButtons.querySelector(".btn.selected");
         if (!selected) {
@@ -160,11 +151,8 @@ function showBotMenu(user) {
         }
         showNotification("Выбран бот", selected.innerText);
         console.log("Выбран бот:", selected.innerText);
-        // Здесь можно добавить переход дальше
     };
 }
-
-
 
 // ======================
 // Уведомления стекло
