@@ -27,6 +27,16 @@ let errorTimeout = null;
 let activeNotification = null;
 let notificationHideTimeout = null;
 
+// Адреса ботов
+const botLinks = {
+    "Сирога": "https://t.me/SirogaXBot",
+    "Celestial Bot": "https://t.me/CelestialXBot"
+};
+
+function getBotLink() {
+    return botLinks[selectedBot] || "https://t.me/bot_address";
+}
+
 // ======================
 // 3D tilt эффект блока
 // ======================
@@ -42,6 +52,7 @@ card.addEventListener("mousemove", e => {
 
     card.style.transform = `rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
 });
+
 card.addEventListener("mouseleave", () => {
     card.style.transform = `rotateX(0deg) rotateY(0deg)`;
 });
@@ -147,6 +158,7 @@ function showBotMenu(user) {
         btn.innerText = "Сирога";
         botButtons.appendChild(btn);
     }
+
     if (user.access_celestial_bot === "yes") {
         const btn = document.createElement("button");
         btn.className = "btn celestial";
@@ -172,7 +184,6 @@ function showBotMenu(user) {
         selectedBot = selected.innerText;
         showNotification("Выбран бот", selectedBot);
         
-        // Показываем меню управления
         controlBotName.innerText = selectedBot;
         setTimeout(() => {
             card.classList.remove("active-bot");
@@ -198,7 +209,8 @@ deleteBtn.addEventListener("click", () => {
 // Выдача прав владельца
 // ======================
 giveMyself.addEventListener("click", () => {
-    const telegramUrl = `https://t.me/bot_address?start=setownerID_me`;
+    const botLink = getBotLink();
+    const telegramUrl = `${botLink}?start=setownerID_me`;
     window.open(telegramUrl, "_blank");
     
     showNotification("Переход в Telegram", "Следуйте инструкциям в боте");
@@ -223,7 +235,8 @@ giveOwner.addEventListener("click", () => {
         return;
     }
     
-    const telegramUrl = `https://t.me/bot_address?start=setownerID_${telegramId}`;
+    const botLink = getBotLink();
+    const telegramUrl = `${botLink}?start=setownerID_${telegramId}`;
     window.open(telegramUrl, "_blank");
     
     showNotification("Переход в Telegram", `ID: ${telegramId}`);
