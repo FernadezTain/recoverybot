@@ -38,7 +38,9 @@ continueBtn.addEventListener("click", () => {
 
 backBtn.addEventListener("click", () => {
     card.classList.remove("active-code", "active-bot");
+    card.classList.add("active-main"); // восстанавливаем главное меню
 });
+
 
 // Меню ботов → возврат в ввод кода
 botBackBtn.addEventListener("click", () => {
