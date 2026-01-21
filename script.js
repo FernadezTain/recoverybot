@@ -36,16 +36,19 @@ card.addEventListener("mouseleave", () => {
 // ======================
 // Навигация между меню
 // ======================
+// Главное меню → Ввод кода
 continueBtn.addEventListener("click", () => {
-    card.classList.remove("active-bot", "active-code");
+    card.classList.remove("active-main", "active-bot");
     card.classList.add("active-code");
 });
 
+// Ввод кода → Главное меню
 backBtn.addEventListener("click", () => {
     card.classList.remove("active-code", "active-bot");
-    card.classList.add("active-main"); // восстановление главного меню
+    card.classList.add("active-main");
 });
 
+// Меню ботов → Ввод кода
 botBackBtn.addEventListener("click", () => {
     card.classList.remove("active-bot");
     card.classList.add("active-code");
