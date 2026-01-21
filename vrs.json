@@ -16,12 +16,6 @@
     "status": "Admin",
     "access_siroga": "yes",
     "access_celestial_bot": "no"
-  },
-  "TEST": {
-    "name": "TestUser",
-    "status": "TEST",
-    "access_siroga": "yes",
-    "access_celestial_bot": "yes"
   }
 }
 
