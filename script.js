@@ -34,6 +34,12 @@ backBtn.addEventListener("click", () => {
     card.classList.remove("active-code", "active-bot");
 });
 
+// При возврате с меню ботов
+botBackBtn.addEventListener("click", () => {
+    card.classList.remove("active-bot"); // убираем меню ботов
+    card.classList.add("active-code");   // возвращаем меню ввода кода
+});
+
 // Проверка кода и переход к меню ботов
 verifyBtn.addEventListener("click", () => {
     const code = codeInput.value.trim().toUpperCase();
