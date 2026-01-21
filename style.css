@@ -146,8 +146,9 @@ input:focus {
 .btn.danger.green { background: #00c853; }
 .btn.danger:hover { background: #e13232; }
 
+/* Плавный переход для кнопки выбранного бота */
 .card-bot .btn {
-    width: 180px;                /* чуть больше ширины */
+    width: 180px;
     margin: 10px 0;
     padding: 12px 20px;
     border-radius: 16px;
@@ -159,37 +160,38 @@ input:focus {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: all 0.3s ease; /* плавный переход */
     box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
 
+/* Hover эффект */
 .card-bot .btn:hover {
     transform: scale(1.05);
     background: rgba(255, 255, 255, 0.1);
     box-shadow: 0 12px 24px rgba(0,0,0,0.5);
 }
 
+/* Active эффект при нажатии */
 .card-bot .btn:active {
     transform: scale(0.98);
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
-/* Опционально — разные цвета для разных ботов */
-.btn.siroga {
-    background: rgba(255, 59, 59, 0.15);
-    border-color: rgba(255, 59, 59, 0.3);
-}
-.btn.siroga:hover {
-    background: rgba(255, 59, 59, 0.25);
+/* Кнопка выбранного бота — синий цвет */
+.card-bot .btn.selected {
+    background: rgba(0, 122, 255, 0.25);
+    border-color: rgba(0, 122, 255, 0.6);
+    color: #fff;
 }
 
-.btn.celestial {
-    background: rgba(0, 200, 83, 0.15);
-    border-color: rgba(0, 200, 83, 0.3);
+/* Кнопка продолжить — зелёная при выборе бота */
+#botContinueBtn.selected {
+    background: #00c853 !important;
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(0,200,83,0.5);
+    transition: all 0.3s ease;
 }
-.btn.celestial:hover {
-    background: rgba(0, 200, 83, 0.25);
-}
+
 
 /* ============================== */
 /* Уведомления стекло (верхний угол сайта) */
