@@ -16,7 +16,7 @@ body {
 
 .scene {
     perspective: 1400px;
-    overflow: visible; /* для 3D эффектов */
+    overflow: visible;
 }
 
 .card {
@@ -28,12 +28,22 @@ body {
         0 50px 100px rgba(0, 0, 0, 0.85),
         inset 0 0 0 1px rgba(255, 255, 255, 0.05);
     position: relative;
-    overflow: hidden; /* чтобы анимация карточек не вылезала */
+    overflow: hidden;
     transform-style: preserve-3d;
-    transition: transform 0.15s ease;
+    transition: transform 0.15s ease, width 0.5s ease, height 0.5s ease;
 }
 
-/* Все «лица» блока */
+/* Размеры для разных состояний */
+.card.active-control {
+    width: 520px;
+    height: 380px;
+}
+
+.card.active-owner {
+    width: 520px;
+    height: 380px;
+}
+
 .card-face {
     position: absolute;
     inset: 0;
@@ -49,7 +59,7 @@ body {
     pointer-events: none;
 }
 
-/* Активные состояния */
+/* ОСНОВНОЕ МЕНЮ */
 .card.active-main .card-main {
     transform: translateX(0);
     opacity: 1;
@@ -57,19 +67,16 @@ body {
     pointer-events: auto;
 }
 
-.card.active-main .card-code {
+.card.active-main .card-code,
+.card.active-main .card-bot,
+.card.active-main .card-control,
+.card.active-main .card-owner {
     transform: translateX(100%);
     opacity: 0;
     filter: blur(6px);
 }
 
-.card.active-main .card-bot {
-    transform: translateX(100%);
-    opacity: 0;
-    filter: blur(6px);
-}
-
-/* Код - активен */
+/* ВВОД КОДА */
 .card.active-code .card-main {
     transform: translateX(-100%);
     opacity: 0;
@@ -83,19 +90,16 @@ body {
     pointer-events: auto;
 }
 
-.card.active-code .card-bot {
+.card.active-code .card-bot,
+.card.active-code .card-control,
+.card.active-code .card-owner {
     transform: translateX(100%);
     opacity: 0;
     filter: blur(6px);
 }
 
-/* Бот - активен */
-.card.active-bot .card-main {
-    transform: translateX(-100%);
-    opacity: 0;
-    filter: blur(6px);
-}
-
+/* ВЫБОР БОТА */
+.card.active-bot .card-main,
 .card.active-bot .card-code {
     transform: translateX(-100%);
     opacity: 0;
@@ -109,12 +113,58 @@ body {
     pointer-events: auto;
 }
 
+.card.active-bot .card-control,
+.card.active-bot .card-owner {
+    transform: translateX(100%);
+    opacity: 0;
+    filter: blur(6px);
+}
+
+/* УПРАВЛЕНИЕ БОТОМ */
+.card.active-control .card-main,
+.card.active-control .card-code,
+.card.active-control .card-bot {
+    transform: translateX(-100%);
+    opacity: 0;
+    filter: blur(6px);
+}
+
+.card.active-control .card-control {
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
+    pointer-events: auto;
+}
+
+.card.active-control .card-owner {
+    transform: translateX(100%);
+    opacity: 0;
+    filter: blur(6px);
+}
+
+/* ВЫДАЧА ПРАВ ВЛАДЕЛЬЦА */
+.card.active-owner .card-main,
+.card.active-owner .card-code,
+.card.active-owner .card-bot,
+.card.active-owner .card-control {
+    transform: translateX(-100%);
+    opacity: 0;
+    filter: blur(6px);
+}
+
+.card.active-owner .card-owner {
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
+    pointer-events: auto;
+}
+
 /* Тексты */
 h1, h2 { color: #fff; }
 p { color: #aaa; font-size: 15px; }
 .desc { font-size: 14px; line-height: 1.4; text-align: center; }
 
-/* Поле ввода в стиле сайта (тёмное стекло) */
+/* Поле ввода */
 input {
     padding: 12px 14px;
     border-radius: 12px;
@@ -160,17 +210,83 @@ input:focus {
     cursor: pointer;
     transition: 0.2s;
 }
+
 .btn:hover { background: #e5e5e5; }
 
-/* Красные / подтверждающие кнопки */
+/* Опасные кнопки */
 .btn.danger {
     background: #ff3b3b;
     color: #fff;
 }
-.btn.danger.green { background: #00c853; }
-.btn.danger:hover { background: #e13232; }
 
-/* Плавный переход для кнопки выбранного бота */
+.btn.danger.green { 
+    background: #00c853;
+}
+
+.btn.danger:hover { background: #e13232; }
+.btn.danger.green:hover { background: #00a340; }
+
+/* Красная кнопка удаления */
+.btn.danger-red {
+    background: #ff3b3b;
+    color: #fff;
+}
+
+.btn.danger-red:hover {
+    background: #e13232;
+}
+
+/* Стили для меню управления ботом */
+.control-header {
+    text-align: left;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.control-header h2 {
+    margin-bottom: 5px;
+}
+
+.control-header p {
+    color: #fff;
+    font-weight: 600;
+}
+
+.control-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.control-btn {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+.control-btn:hover {
+    transform: scale(1.02);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.5);
+}
+
+.control-btn:active {
+    transform: scale(0.98);
+}
+
+/* Кнопки выбора бота */
 .card-bot .btn {
     width: 180px;
     margin: 10px 0;
@@ -184,42 +300,34 @@ input:focus {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     cursor: pointer;
-    transition: all 0.3s ease; /* плавный переход */
+    transition: all 0.3s ease;
     box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
 
-/* Hover эффект */
 .card-bot .btn:hover {
     transform: scale(1.05);
     background: rgba(255, 255, 255, 0.1);
     box-shadow: 0 12px 24px rgba(0,0,0,0.5);
 }
 
-/* Active эффект при нажатии */
 .card-bot .btn:active {
     transform: scale(0.98);
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
-/* Кнопка выбранного бота — синий цвет */
 .card-bot .btn.selected {
     background: rgba(0, 122, 255, 0.25);
     border-color: rgba(0, 122, 255, 0.6);
     color: #fff;
 }
 
-/* Кнопка продолжить — зелёная при выборе бота */
 #botContinueBtn.selected {
     background: #00c853 !important;
     color: #fff;
     box-shadow: 0 8px 20px rgba(0,200,83,0.5);
-    transition: all 0.3s ease;
 }
 
-
-/* ============================== */
-/* Уведомления стекло (верхний угол сайта) */
-/* ============================== */
+/* Уведомления */
 #notification-container {
     position: fixed;
     top: 20px;
@@ -261,6 +369,7 @@ input:focus {
     font-size: 14px;
     color: #ddd;
 }
+
 /* Баннер ошибки */
 #error-banner {
     position: fixed;
@@ -287,19 +396,16 @@ input:focus {
     z-index: 9999;
 }
 
-/* Появление баннера */
 #error-banner.show {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
     pointer-events: auto;
 }
 
-/* Текст ошибки */
 #error-message {
     flex: 1;
 }
 
-/* Крестик закрытия баннера */
 #error-banner .close-btn {
     width: 18px;
     height: 18px;
@@ -326,5 +432,5 @@ input:focus {
 }
 
 #error-banner .close-btn::after {
-    transform: translate(-50%, -50%) rotate(-45deg);
+    transform: translate(-50%, -50%) rotate(-50deg);
 }
