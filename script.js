@@ -81,14 +81,26 @@ verifyBtn.addEventListener("click", () => {
 });
 
 function showError(message) {
-    errorMessage.innerText = message;
-    errorBanner.classList.add("show");
+    // Если баннер уже показан, сначала скрываем его мгновенно
+    if (errorBanner.classList.contains("show")) {
+        errorBanner.classList.remove("show");
+        // Немного ждём, чтобы transition успел сработать
+        setTimeout(() => {
+            errorMessage.innerText = message;
+            errorBanner.classList.add("show");
+        }, 50);
+    } else {
+        errorMessage.innerText = message;
+        errorBanner.classList.add("show");
+    }
 }
 
+// Скрытие баннера
 function hideError() {
     errorBanner.classList.remove("show");
 }
 
+// Кнопка OK закрывает баннер
 errorOkBtn.addEventListener("click", hideError);
 // ======================
 // Показ меню ботов
