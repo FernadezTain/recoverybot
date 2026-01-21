@@ -29,8 +29,8 @@ let notificationHideTimeout = null;
 
 // Адреса ботов
 const botLinks = {
-    "Сирога": "https://t.me/SirogaXBot",
-    "Celestial Bot": "https://t.me/CelestialXBot"
+    "Сирога": "https://t.me/siroga_bot",
+    "Celestial Bot": "https://t.me/celestial_bot"
 };
 
 function getBotLink() {
@@ -197,8 +197,10 @@ function showBotMenu(user) {
 // ======================
 ownerBtn.addEventListener("click", () => {
     card.classList.remove("active-control");
-    card.classList.add("active-owner");
-    telegramIdInput.focus();
+    setTimeout(() => {
+        card.classList.add("active-owner");
+        telegramIdInput.focus();
+    }, 50);
 });
 
 deleteBtn.addEventListener("click", () => {
