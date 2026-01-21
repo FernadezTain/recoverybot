@@ -114,9 +114,11 @@ function resetBotSelection() {
 }
 
 function showBotMenu(user) {
+    // Сброс прошлых кнопок и выделений
     botButtons.innerHTML = "";
     resetBotSelection();
 
+    // Создаём кнопки ботов
     if (user.access_siroga === "yes") {
         const btn = document.createElement("button");
         btn.className = "btn siroga";
@@ -130,9 +132,11 @@ function showBotMenu(user) {
         botButtons.appendChild(btn);
     }
 
-    card.classList.add("active-bot");
-    setTimeout(() => card.classList.remove("active-main", "active-code"), 20);
+    // Сбрасываем состояния карточки и показываем меню ботов
+    card.classList.remove("active-main", "active-code");
+    setTimeout(() => card.classList.add("active-bot"), 20);
 
+    // Обработчики выбора бота
     const allBotBtns = botButtons.querySelectorAll(".btn");
     allBotBtns.forEach(btn => {
         btn.addEventListener("click", () => {
@@ -141,7 +145,20 @@ function showBotMenu(user) {
             botContinueBtn.classList.add("selected"); // зеленая кнопка
         });
     });
+
+    // Обработчик кнопки Продолжить (если ещё не назначен)
+    botContinueBtn.onclick = () => {
+        const selected = botButtons.querySelector(".btn.selected");
+        if (!selected) {
+            showError("Выберите бота прежде чем продолжить!");
+            return;
+        }
+        showNotification("Выбран бот", selected.innerText);
+        console.log("Выбран бот:", selected.innerText);
+        // Здесь можно добавить переход дальше
+    };
 }
+
 
 // ======================
 // Уведомления стекло
