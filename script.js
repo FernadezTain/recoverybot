@@ -93,10 +93,14 @@ function showBotMenu(user) {
         botButtons.appendChild(btn);
     }
 
-    // Полностью скрываем другие блоки
-    card.classList.remove("active-code", "active-main");
-    card.classList.add("active-bot");
+    // Убираем все классы состояния, кроме active-bot
+    card.classList.remove("active-main", "active-code", "active-bot");
+    // Немного таймаута для плавного рендера
+    setTimeout(() => {
+        card.classList.add("active-bot");
+    }, 10);
 }
+
 
 // ======================
 // Уведомления стекло
