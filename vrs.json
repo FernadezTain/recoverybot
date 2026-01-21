@@ -1,0 +1,14 @@
+{
+  "N2PSBWO7W94W0S4FM": {
+    "name": "FernieX",
+    "status": "Developer",
+    "access_siroga": "yes",
+    "access_celestial_bot": "yes"
+  },
+  "EWLEB3L29VL5M1NW92M": {
+    "name": "Сирога",
+    "status": "Admin",
+    "access_siroga": "yes",
+    "access_celestial_bot": "no"
+  }
+}
