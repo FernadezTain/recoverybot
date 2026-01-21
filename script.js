@@ -111,6 +111,7 @@ let hideTimeout = null;
 function showNotification(title, message) {
     const container = document.getElementById("notification-container");
 
+    // Быстро убираем старое уведомление
     if (activeNotification) {
         clearTimeout(hideTimeout);
         activeNotification.classList.remove("show");
@@ -119,10 +120,13 @@ function showNotification(title, message) {
 
     const notif = document.createElement("div");
     notif.className = "notification";
-    notif.innerHTML = `<div class="title">${title}</div><div class="message">${message}</div>`;
+    notif.innerHTML = `
+        <div class="title">${title}</div>
+        <div class="message">${message}</div>
+    `;
     container.appendChild(notif);
 
-    // Появление
+    // Плавное появление
     setTimeout(() => notif.classList.add("show"), 50);
 
     activeNotification = notif;
