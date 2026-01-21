@@ -5,6 +5,8 @@ const verifyBtn = document.getElementById("verifyBtn");
 const codeInput = document.getElementById("codeInput");
 const botButtons = document.getElementById("botButtons");
 const botContinueBtn = document.getElementById("botContinueBtn");
+const botBackBtn = document.getElementById("botBackBtn");
+
 
 let currentUser = null;
 
