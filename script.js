@@ -11,8 +11,9 @@ const errorMessage = document.getElementById("error-message");
 const errorCloseBtn = document.querySelector("#error-banner .close-btn");
 
 let currentUser = null;
-let errorTimeout = null; // отдельный таймаут для баннера ошибки
-let notificationTimeout = null; // отдельный таймаут для уведомлений
+let errorTimeout = null; // баннер ошибки
+let activeNotification = null; // уведомления
+let notificationHideTimeout = null; // таймаут для уведомлений
 
 // ======================
 // 3D tilt эффект блока
@@ -170,7 +171,7 @@ function showNotification(title, message) {
     const container = document.getElementById("notification-container");
 
     if (activeNotification) {
-        clearTimeout(notificationTimeout);
+        clearTimeout(notificationHideTimeout);
         activeNotification.classList.remove("show");
         setTimeout(() => activeNotification.remove(), 200);
     }
@@ -186,7 +187,7 @@ function showNotification(title, message) {
     setTimeout(() => notif.classList.add("show"), 50);
     activeNotification = notif;
 
-    notificationTimeout = setTimeout(() => {
+    notificationHideTimeout = setTimeout(() => {
         notif.classList.remove("show");
         setTimeout(() => {
             notif.remove();
