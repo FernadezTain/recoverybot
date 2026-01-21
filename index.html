@@ -7,9 +7,7 @@
 </head>
 <body>
 <div class="scene">
-    <!-- Добавили active-main -->
     <div class="card active-main" id="card">
-
         <!-- Основное меню -->
         <div class="card-face card-main">
             <h1>Recovery</h1>
@@ -36,15 +34,41 @@
                 <button class="btn" id="botContinueBtn">Продолжить</button>
             </div>
         </div>
+
+        <!-- Управление ботом -->
+        <div class="card-face card-control">
+            <div class="control-header">
+                <h2>Управление</h2>
+                <p id="controlBotName">Сирога</p>
+            </div>
+            <div class="control-buttons">
+                <button class="btn control-btn" id="ownerBtn">Получить права Владельца</button>
+                <button class="btn control-btn danger-red" id="deleteBtn">Удалить базу данных</button>
+            </div>
+            <div class="buttons">
+                <button class="btn" id="controlBackBtn">Назад</button>
+            </div>
+        </div>
+
+        <!-- Выдача прав владельца -->
+        <div class="card-face card-owner">
+            <h2>Выдача прав владельца</h2>
+            <p class="desc">Введите TelegramID пользователя, которому нужно выдать права владельца или нажмите кнопку "выдать себе" ниже</p>
+            <input type="text" id="telegramIdInput" placeholder="Введите ID">
+            <div class="buttons">
+                <button class="btn" id="ownerBackBtn">Назад</button>
+                <button class="btn" id="giveMyself">Выдать себе</button>
+                <button class="btn danger green" id="giveOwner">Выдать права</button>
+            </div>
+        </div>
     </div>   
 </div>
 
-        <div id="notification-container"></div>
+<div id="notification-container"></div>
 <div id="error-banner">
     <span id="error-message">Неверный верификационный код</span>
     <div class="close-btn"></div>
 </div>
-
 
 <script src="script.js"></script>
 </body>
