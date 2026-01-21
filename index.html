@@ -8,10 +8,25 @@
 <body>
 
 <div class="scene">
-    <div class="card">
-        <h1>Recovery</h1>
-        <p>Восстановление доступа</p>
-        <a href="#" class="btn">Продолжить</a>
+    <div class="card" id="card">
+
+        <!-- Левая часть -->
+        <div class="card-face card-main">
+            <h1>Recovery</h1>
+            <p>Восстановление доступа</p>
+            <button class="btn" id="continueBtn">Продолжить</button>
+        </div>
+
+        <!-- Правая часть -->
+        <div class="card-face card-confirm">
+            <h2>Подтвердите доступ</h2>
+            <p class="desc">
+                Это действие предотвращает несанкционированное восстановление,
+                захват админки и удаление базы данных.
+            </p>
+            <button class="btn danger">Подтвердить</button>
+        </div>
+
     </div>
 </div>
 
