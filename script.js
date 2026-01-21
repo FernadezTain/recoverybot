@@ -6,6 +6,9 @@ const codeInput = document.getElementById("codeInput");
 const botButtons = document.getElementById("botButtons");
 const botContinueBtn = document.getElementById("botContinueBtn");
 const botBackBtn = document.getElementById("botBackBtn");
+const errorBanner = document.getElementById("error-banner");
+const errorMessage = document.getElementById("error-message");
+const errorOkBtn = document.getElementById("error-ok-btn");
 
 let currentUser = null;
 
@@ -60,22 +63,33 @@ verifyBtn.addEventListener("click", () => {
             if (data[code]) {
                 currentUser = data[code];
 
-                // Показ уведомления
+                // Показ уведомления успешного входа
                 showNotification(
                     "Выполнен вход в систему",
                     `Пользователь: ${currentUser.name}`
                 );
 
-                // Переходим сразу в меню ботов (без главного меню)
+                // Переходим сразу в меню ботов
                 showBotMenu(currentUser);
 
             } else {
-                alert("❌ Неверный верификационный код");
+                // Вместо alert показываем баннер ошибки
+                showError("❌ Неверный верификационный код");
             }
         })
         .catch((err) => console.error("Ошибка загрузки vrs.json:", err));
 });
 
+function showError(message) {
+    errorMessage.innerText = message;
+    errorBanner.classList.add("show");
+}
+
+function hideError() {
+    errorBanner.classList.remove("show");
+}
+
+errorOkBtn.addEventListener("click", hideError);
 // ======================
 // Показ меню ботов
 // ======================
