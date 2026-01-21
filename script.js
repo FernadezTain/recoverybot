@@ -59,6 +59,9 @@ botBackBtn.addEventListener("click", () => {
 // ======================
 // Проверка кода и вход
 // ======================
+// ======================
+// Проверка кода и вход
+// ======================
 verifyBtn.addEventListener("click", () => {
     const code = codeInput.value.trim().toUpperCase();
 
@@ -73,21 +76,20 @@ verifyBtn.addEventListener("click", () => {
                     `Пользователь: ${currentUser.name}`
                 );
 
-                // Сначала анимируем скрытие блока кода
-                card.classList.add("transitioning");
+                // Плавно скрываем блок ввода кода
                 card.classList.remove("active-code");
 
-                // Через анимацию показываем меню ботов
+                // Через время, равное transition (0.5s), показываем меню ботов
                 setTimeout(() => {
                     showBotMenu(currentUser);
-                    card.classList.remove("transitioning");
-                }, 500); // совпадает с transition duration из CSS
+                }, 500);
             } else {
                 showError("Неверный верификационный код");
             }
         })
         .catch(err => console.error("Ошибка загрузки vrs.json:", err));
 });
+
 
 // ======================
 // Баннер ошибки
@@ -118,18 +120,10 @@ errorCloseBtn.addEventListener("click", hideError);
 // ======================
 // Показ меню ботов
 // ======================
-function resetBotSelection() {
-    const allBotBtns = botButtons.querySelectorAll(".btn");
-    allBotBtns.forEach(btn => btn.classList.remove("selected"));
-    botContinueBtn.classList.remove("selected");
-}
-
 function showBotMenu(user) {
-    // Сброс прошлых кнопок и выделений
     botButtons.innerHTML = "";
     resetBotSelection();
 
-    // Создаём кнопки ботов
     if (user.access_siroga === "yes") {
         const btn = document.createElement("button");
         btn.className = "btn siroga";
@@ -143,7 +137,7 @@ function showBotMenu(user) {
         botButtons.appendChild(btn);
     }
 
-    // Сбрасываем состояния карточки и показываем меню ботов
+    // Сначала убираем все остальные классы, потом включаем .active-bot
     card.classList.remove("active-main", "active-code");
     setTimeout(() => card.classList.add("active-bot"), 20);
 
@@ -157,7 +151,7 @@ function showBotMenu(user) {
         });
     });
 
-    // Обработчик кнопки Продолжить (если ещё не назначен)
+    // Кнопка Продолжить в меню ботов
     botContinueBtn.onclick = () => {
         const selected = botButtons.querySelector(".btn.selected");
         if (!selected) {
@@ -169,6 +163,7 @@ function showBotMenu(user) {
         // Здесь можно добавить переход дальше
     };
 }
+
 
 
 // ======================
