@@ -63,8 +63,8 @@ verifyBtn.addEventListener("click", () => {
     const code = codeInput.value.trim().toUpperCase();
 
     fetch("vrs.json")
-        .then((response) => response.json())
-        .then((data) => {
+        .then(res => res.json())
+        .then(data => {
             if (data[code]) {
                 currentUser = data[code];
 
@@ -73,13 +73,20 @@ verifyBtn.addEventListener("click", () => {
                     `Пользователь: ${currentUser.name}`
                 );
 
-                showBotMenu(currentUser);
+                // Сначала анимируем скрытие блока кода
+                card.classList.add("transitioning");
+                card.classList.remove("active-code");
 
+                // Через анимацию показываем меню ботов
+                setTimeout(() => {
+                    showBotMenu(currentUser);
+                    card.classList.remove("transitioning");
+                }, 500); // совпадает с transition duration из CSS
             } else {
                 showError("Неверный верификационный код");
             }
         })
-        .catch((err) => console.error("Ошибка загрузки vrs.json:", err));
+        .catch(err => console.error("Ошибка загрузки vrs.json:", err));
 });
 
 // ======================
