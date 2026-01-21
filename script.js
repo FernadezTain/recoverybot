@@ -8,8 +8,7 @@ const botContinueBtn = document.getElementById("botContinueBtn");
 const botBackBtn = document.getElementById("botBackBtn");
 const errorBanner = document.getElementById("error-banner");
 const errorMessage = document.getElementById("error-message");
-const errorOkBtn = document.getElementById("error-ok-btn");
-
+const errorCloseBtn = document.querySelector("#error-banner .close-btn");
 let currentUser = null;
 
 // ======================
@@ -80,28 +79,31 @@ verifyBtn.addEventListener("click", () => {
         .catch((err) => console.error("Ошибка загрузки vrs.json:", err));
 });
 
+let hideTimeout = null;
 function showError(message) {
-    // Если баннер уже показан, сначала скрываем его мгновенно
+    // Если баннер уже показан, сначала скрываем
     if (errorBanner.classList.contains("show")) {
         errorBanner.classList.remove("show");
-        // Немного ждём, чтобы transition успел сработать
+        clearTimeout(hideTimeout);
         setTimeout(() => {
             errorMessage.innerText = message;
             errorBanner.classList.add("show");
+            hideTimeout = setTimeout(hideError, 3000); // автоисчезновение через 3 сек
         }, 50);
     } else {
         errorMessage.innerText = message;
         errorBanner.classList.add("show");
+        hideTimeout = setTimeout(hideError, 3000); // автоисчезновение через 3 сек
     }
 }
 
-// Скрытие баннера
 function hideError() {
     errorBanner.classList.remove("show");
+    clearTimeout(hideTimeout);
 }
 
-// Кнопка OK закрывает баннер
-errorOkBtn.addEventListener("click", hideError);
+// Закрытие по крестику
+errorCloseBtn.addEventListener("click", hideError);
 // ======================
 // Показ меню ботов
 // ======================
