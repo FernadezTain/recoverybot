@@ -16,11 +16,9 @@ body {
 
 .scene {
     perspective: 1400px;
-    overflow: visible;
+    overflow: visible; /* для 3D эффектов */
 }
 
-
-/* Основной блок */
 .card {
     width: 460px;
     height: 300px;
@@ -30,10 +28,11 @@ body {
         0 50px 100px rgba(0, 0, 0, 0.85),
         inset 0 0 0 1px rgba(255, 255, 255, 0.05);
     position: relative;
-    overflow: visible; /* раньше было hidden */
+    overflow: hidden; /* чтобы анимация карточек не вылезала */
     transform-style: preserve-3d;
     transition: transform 0.15s ease;
 }
+
 
 
 /* Все «лица» блока */
