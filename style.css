@@ -124,3 +124,49 @@ input {
 .card-bot .btn:hover {
     transform: scale(1.05);
 }
+/* Контейнер уведомлений */
+#notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 9999;
+}
+
+/* Уведомление стекло */
+.notification {
+    background: rgba(255, 255, 255, 0.1); /* полупрозрачное стекло */
+    backdrop-filter: blur(12px); /* размытие фона */
+    -webkit-backdrop-filter: blur(12px); /* для Safari */
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 16px 20px;
+    color: #fff;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Появление */
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Заголовок */
+.notification .title {
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+/* Описание */
+.notification .message {
+    font-weight: 400;
+    font-size: 14px;
+    color: #ddd;
+}
