@@ -24,7 +24,6 @@ card.addEventListener("mousemove", (e) => {
 
     card.style.transform = `rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
 });
-
 card.addEventListener("mouseleave", () => {
     card.style.transform = `rotateX(0deg) rotateY(0deg)`;
 });
@@ -32,25 +31,24 @@ card.addEventListener("mouseleave", () => {
 // ======================
 // Навигация между меню
 // ======================
-
-// Переход к вводу кода
 continueBtn.addEventListener("click", () => {
-    card.classList.remove("active-bot", "active-code"); // сначала убираем всё
+    card.classList.remove("active-bot", "active-code");
     card.classList.add("active-code");
 });
 
-// Назад в главное меню
 backBtn.addEventListener("click", () => {
     card.classList.remove("active-code", "active-bot");
 });
 
 // Меню ботов → возврат в ввод кода
 botBackBtn.addEventListener("click", () => {
-    card.classList.remove("active-bot", "active-code"); // очищаем классы
-    card.classList.add("active-code"); // показываем только ввод кода
+    card.classList.remove("active-bot");
+    card.classList.add("active-code");
 });
 
-// Проверка кода и переход к меню ботов
+// ======================
+// Проверка кода и вход
+// ======================
 verifyBtn.addEventListener("click", () => {
     const code = codeInput.value.trim().toUpperCase();
 
@@ -59,13 +57,16 @@ verifyBtn.addEventListener("click", () => {
         .then((data) => {
             if (data[code]) {
                 currentUser = data[code];
-                showBotMenu(currentUser);
 
-                // Уведомление
+                // Показ уведомления
                 showNotification(
                     "Выполнен вход в систему",
                     `Пользователь: ${currentUser.name}`
                 );
+
+                // Переходим сразу в меню ботов (без главного меню)
+                showBotMenu(currentUser);
+
             } else {
                 alert("❌ Неверный верификационный код");
             }
@@ -73,7 +74,9 @@ verifyBtn.addEventListener("click", () => {
         .catch((err) => console.error("Ошибка загрузки vrs.json:", err));
 });
 
+// ======================
 // Показ меню ботов
+// ======================
 function showBotMenu(user) {
     botButtons.innerHTML = "";
 
@@ -90,13 +93,10 @@ function showBotMenu(user) {
         botButtons.appendChild(btn);
     }
 
-    // Убираем все предыдущие классы, показываем только меню ботов
-    card.classList.remove("active-code", "active-bot");
-    setTimeout(() => {
-        card.classList.add("active-bot");
-    }, 10); // небольшой таймаут для правильного рендера анимации
+    // Полностью скрываем другие блоки
+    card.classList.remove("active-code", "active-main");
+    card.classList.add("active-bot");
 }
-
 
 // ======================
 // Уведомления стекло
@@ -107,33 +107,23 @@ let hideTimeout = null;
 function showNotification(title, message) {
     const container = document.getElementById("notification-container");
 
-    // Если уже есть уведомление — быстро скрываем
     if (activeNotification) {
         clearTimeout(hideTimeout);
         activeNotification.classList.remove("show");
-        setTimeout(() => {
-            activeNotification.remove();
-        }, 200);
+        setTimeout(() => activeNotification.remove(), 200);
     }
 
-    // Создаем новое уведомление
     const notif = document.createElement("div");
     notif.className = "notification";
-    notif.innerHTML = `
-        <div class="title">${title}</div>
-        <div class="message">${message}</div>
-    `;
-
+    notif.innerHTML = `<div class="title">${title}</div><div class="message">${message}</div>`;
     container.appendChild(notif);
 
-    // Плавное появление
-    setTimeout(() => {
-        notif.classList.add("show");
-    }, 50);
+    // Появление
+    setTimeout(() => notif.classList.add("show"), 50);
 
     activeNotification = notif;
 
-    // Авто-скрытие через 2 секунды
+    // Авто-скрытие
     hideTimeout = setTimeout(() => {
         notif.classList.remove("show");
         setTimeout(() => {
