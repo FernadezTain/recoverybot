@@ -46,34 +46,28 @@ body {
     transition: all 0.5s cubic-bezier(.4,0,.2,1);
     opacity: 0;
     transform: translateX(100%);
+    pointer-events: none; /* скрытые блоки некликабельны */
 }
 
-/* Главное меню */
-.card-main { 
-    transform: translateX(0); 
+/* Активные состояния с эффектами сдвига и размытия */
+.card.active-main .card-main {
+    transform: translateX(0);
     opacity: 1;
+    filter: blur(0);
+    pointer-events: auto;
 }
 
-/* Ввод кода */
-.card-code { 
-    text-align: center; 
-}
-
-/* Меню ботов */
-.card-bot { 
-    text-align: center; 
-}
-
-/* Активные состояния */
 .card.active-code .card-main {
     transform: translateX(-120%);
     opacity: 0;
     filter: blur(6px);
 }
+
 .card.active-code .card-code {
     transform: translateX(0);
     opacity: 1;
     filter: blur(0);
+    pointer-events: auto;
 }
 
 .card.active-bot .card-code {
@@ -81,10 +75,12 @@ body {
     opacity: 0;
     filter: blur(6px);
 }
+
 .card.active-bot .card-bot {
     transform: translateX(0);
     opacity: 1;
     filter: blur(0);
+    pointer-events: auto;
 }
 
 /* Тексты */
