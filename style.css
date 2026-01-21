@@ -16,7 +16,9 @@ body {
 
 .scene {
     perspective: 1400px;
+    overflow: visible;
 }
+
 
 /* Основной блок */
 .card {
