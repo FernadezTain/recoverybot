@@ -33,8 +33,6 @@ body {
     transition: transform 0.15s ease;
 }
 
-
-
 /* Все «лица» блока */
 .card-face {
     position: absolute;
@@ -48,10 +46,10 @@ body {
     transition: all 0.5s cubic-bezier(.4,0,.2,1);
     opacity: 0;
     transform: translateX(100%);
-    pointer-events: none; /* скрытые блоки некликабельны */
+    pointer-events: none;
 }
 
-/* Активные состояния с эффектами сдвига и размытия */
+/* Активные состояния */
 .card.active-main .card-main {
     transform: translateX(0);
     opacity: 1;
@@ -59,8 +57,21 @@ body {
     pointer-events: auto;
 }
 
+.card.active-main .card-code {
+    transform: translateX(100%);
+    opacity: 0;
+    filter: blur(6px);
+}
+
+.card.active-main .card-bot {
+    transform: translateX(100%);
+    opacity: 0;
+    filter: blur(6px);
+}
+
+/* Код - активен */
 .card.active-code .card-main {
-    transform: translateX(-120%);
+    transform: translateX(-100%);
     opacity: 0;
     filter: blur(6px);
 }
@@ -72,8 +83,21 @@ body {
     pointer-events: auto;
 }
 
+.card.active-code .card-bot {
+    transform: translateX(100%);
+    opacity: 0;
+    filter: blur(6px);
+}
+
+/* Бот - активен */
+.card.active-bot .card-main {
+    transform: translateX(-100%);
+    opacity: 0;
+    filter: blur(6px);
+}
+
 .card.active-bot .card-code {
-    transform: translateX(-120%);
+    transform: translateX(-100%);
     opacity: 0;
     filter: blur(6px);
 }
