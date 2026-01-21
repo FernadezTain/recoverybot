@@ -79,31 +79,57 @@ verifyBtn.addEventListener("click", () => {
 // ======================
 // Показ меню ботов
 // ======================
+// Сбрасываем выбор при повторном входе
+function resetBotSelection() {
+    const allBotBtns = botButtons.querySelectorAll(".btn");
+    allBotBtns.forEach(btn => btn.classList.remove("selected"));
+    botContinueBtn.classList.remove("selected");
+}
+
+// При показе меню ботов сбрасываем выбор
 function showBotMenu(user) {
     botButtons.innerHTML = "";
+    resetBotSelection(); // сброс предыдущего выбора
 
     if (user.access_siroga === "yes") {
         const btn = document.createElement("button");
-        btn.className = "btn";
+        btn.className = "btn siroga"; 
         btn.innerText = "Сирога";
         botButtons.appendChild(btn);
     }
     if (user.access_celestial_bot === "yes") {
         const btn = document.createElement("button");
-        btn.className = "btn";
+        btn.className = "btn celestial"; 
         btn.innerText = "Celestial Bot";
         botButtons.appendChild(btn);
     }
 
-    // Правильный порядок классов: сначала активируем .active-bot
+    // Делаем навигацию по классам
     card.classList.add("active-bot");
-
-    // Убираем старые состояния (главное меню и ввод кода) через небольшую задержку,
-    // чтобы сработал эффект сдвига и размытия
     setTimeout(() => {
         card.classList.remove("active-main", "active-code");
     }, 20);
+
+    // Добавляем обработчик выбора бота
+    const allBotBtns = botButtons.querySelectorAll(".btn");
+    allBotBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            // Сбрасываем все кнопки
+            allBotBtns.forEach(b => b.classList.remove("selected"));
+            // Выделяем выбранную кнопку
+            btn.classList.add("selected");
+            // Делаем кнопку "Продолжить" зеленой
+            botContinueBtn.classList.add("selected");
+        });
+    });
 }
+
+// При возврате назад из меню ботов сбрасываем выбор
+botBackBtn.addEventListener("click", () => {
+    card.classList.remove("active-bot");
+    card.classList.add("active-code");
+    resetBotSelection(); // сброс цвета
+});
 
 
 // ======================
