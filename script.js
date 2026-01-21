@@ -67,13 +67,14 @@ verifyBtn.addEventListener("click", () => {
                 currentUser = data[code];
                 showNotification("Выполнен вход в систему", `Пользователь: ${currentUser.name}`);
 
-                // Сначала скрываем блок ввода кода
-                card.classList.remove("active-code");
-
-                // Через 0.5s показываем меню ботов (равно transition)
+                // Сразу подготавливаем меню ботов
+                showBotMenu(currentUser);
+                
+                // Потом убираем active-code и добавляем active-bot
                 setTimeout(() => {
-                    showBotMenu(currentUser);
-                }, 500);
+                    card.classList.remove("active-code");
+                    card.classList.add("active-bot");
+                }, 50);
             } else {
                 showError("Неверный верификационный код");
             }
@@ -134,10 +135,6 @@ function showBotMenu(user) {
         botButtons.appendChild(btn);
     }
 
-    // Сбрасываем классы и показываем меню ботов
-    card.classList.remove("active-main", "active-code");
-    setTimeout(() => card.classList.add("active-bot"), 20);
-
     // Обработчики кнопок выбора бота
     const allBotBtns = botButtons.querySelectorAll(".btn");
     allBotBtns.forEach(btn => {
@@ -157,10 +154,8 @@ function showBotMenu(user) {
         }
         showNotification("Выбран бот", selected.innerText);
         console.log("Выбран бот:", selected.innerText);
-        // TODO: добавь здесь переход дальше
     };
 }
-
 // ======================
 // Уведомления стекло
 // ======================
