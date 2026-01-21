@@ -59,6 +59,15 @@ body {
     pointer-events: none;
 }
 
+/* Начальное состояние для всех лиц */
+.card-main,
+.card-code,
+.card-bot,
+.card-control,
+.card-owner {
+    transform: translateX(100%);
+}
+
 /* ОСНОВНОЕ МЕНЮ */
 .card.active-main .card-main {
     transform: translateX(0);
