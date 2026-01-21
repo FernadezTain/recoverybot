@@ -44,16 +44,25 @@ body {
     align-items: center;
     gap: 14px;
     transition: all 0.5s cubic-bezier(.4,0,.2,1);
+    opacity: 0;
+    transform: translateX(100%);
 }
 
 /* Главное меню */
-.card-main { transform: translateX(0); }
+.card-main { 
+    transform: translateX(0); 
+    opacity: 1;
+}
 
 /* Ввод кода */
-.card-code { transform: translateX(100%); text-align: center; }
+.card-code { 
+    text-align: center; 
+}
 
 /* Меню ботов */
-.card-bot { transform: translateX(100%); text-align: center; }
+.card-bot { 
+    text-align: center; 
+}
 
 /* Активные состояния */
 .card.active-code .card-main {
@@ -61,28 +70,52 @@ body {
     opacity: 0;
     filter: blur(6px);
 }
-.card.active-code .card-code { transform: translateX(0); }
+.card.active-code .card-code {
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
+}
 
 .card.active-bot .card-code {
     transform: translateX(-120%);
     opacity: 0;
     filter: blur(6px);
 }
-.card.active-bot .card-bot { transform: translateX(0); }
+.card.active-bot .card-bot {
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
+}
 
 /* Тексты */
 h1, h2 { color: #fff; }
 p { color: #aaa; font-size: 15px; }
 .desc { font-size: 14px; line-height: 1.4; text-align: center; }
 
-/* Поле ввода */
+/* Поле ввода в стиле сайта (тёмное стекло) */
 input {
-    padding: 10px;
-    border-radius: 10px;
-    border: none;
-    width: 70%;
-    text-align: center;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: #fff;
     font-size: 14px;
+    text-align: center;
+    width: 70%;
+    transition: all 0.2s ease;
+}
+
+input::placeholder {
+    color: #888;
+}
+
+input:focus {
+    outline: none;
+    border-color: #00c853;
+    box-shadow: 0 0 10px rgba(0, 200, 83, 0.4);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 /* Контейнер кнопок */
@@ -124,7 +157,11 @@ input {
 .card-bot .btn:hover {
     transform: scale(1.05);
 }
-/* Контейнер уведомлений */
+
+/* ============================== */
+/* Уведомления стекло (верхний угол сайта) */
+/* ============================== */
+
 #notification-container {
     position: fixed;
     top: 20px;
@@ -136,11 +173,10 @@ input {
     z-index: 9999;
 }
 
-/* Уведомление стекло */
 .notification {
-    background: rgba(255, 255, 255, 0.1); /* полупрозрачное стекло */
-    backdrop-filter: blur(12px); /* размытие фона */
-    -webkit-backdrop-filter: blur(12px); /* для Safari */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 16px 20px;
@@ -152,19 +188,16 @@ input {
     transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-/* Появление */
 .notification.show {
     opacity: 1;
     transform: translateY(0);
 }
 
-/* Заголовок */
 .notification .title {
     font-weight: 700;
     margin-bottom: 6px;
 }
 
-/* Описание */
 .notification .message {
     font-weight: 400;
     font-size: 14px;
