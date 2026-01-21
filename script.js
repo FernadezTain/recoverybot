@@ -22,61 +22,51 @@ card.addEventListener("mousemove", (e)=>{
 card.addEventListener("mouseleave",()=>{card.style.transform=`rotateX(0deg) rotateY(0deg)`;});
 
 // Переход к вводу кода
-continueBtn.addEventListener("click",()=>{
+continueBtn.addEventListener("click", () => {
+    card.classList.remove("active-bot");
     card.classList.add("active-code");
 });
 
-// Назад
-backBtn.addEventListener("click",()=>{
-    card.classList.remove("active-code");
+// Назад к главному меню из ввода кода
+backBtn.addEventListener("click", () => {
+    card.classList.remove("active-code", "active-bot");
 });
 
-// Ввод кода: красная/зеленая кнопка
-codeInput.addEventListener("input",()=>{
-    if(codeInput.value.length>0){
-        verifyBtn.classList.add("green");
-    }else{
-        verifyBtn.classList.remove("green");
-    }
-});
-
-// Проверка кода и открытие меню ботов
-verifyBtn.addEventListener("click",()=>{
+// Проверка кода и переход к меню ботов
+verifyBtn.addEventListener("click", () => {
     const code = codeInput.value.trim().toUpperCase();
     fetch("vrs.json")
         .then(response => response.json())
         .then(data => {
-            if(data[code]){
-                currentUser = data[code]; // сохраняем пользователя
+            if (data[code]) {
+                currentUser = data[code];
                 showBotMenu(currentUser);
             } else {
                 alert("❌ Неверный верификационный код");
             }
         })
-        .catch(err=>{
-            console.error("Ошибка загрузки vrs.json:", err);
-        });
+        .catch(err => console.error("Ошибка загрузки vrs.json:", err));
 });
 
-// Отображение меню ботов
-function showBotMenu(user){
-    // Очистка старых кнопок
+function showBotMenu(user) {
     botButtons.innerHTML = "";
 
-    if(user.access_siroga === "yes"){
+    if (user.access_siroga === "yes") {
         const btn = document.createElement("button");
         btn.className = "btn";
         btn.innerText = "Сирога";
         botButtons.appendChild(btn);
     }
-    if(user.access_celestial_bot === "yes"){
+    if (user.access_celestial_bot === "yes") {
         const btn = document.createElement("button");
         btn.className = "btn";
         btn.innerText = "Celestial Bot";
         botButtons.appendChild(btn);
     }
 
-    // Переход к меню ботов
+    // Обеспечиваем корректный переход
     card.classList.remove("active-code");
     card.classList.add("active-bot");
 }
+
+// При возврате с меню ботов (если добавим кнопку "Назад" позже)
