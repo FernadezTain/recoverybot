@@ -11,7 +11,18 @@ const errorMessage = document.getElementById("error-message");
 const errorCloseBtn = document.querySelector("#error-banner .close-btn");
 const notificationContainer = document.getElementById("notification-container");
 
+// Новые элементы
+const controlBackBtn = document.getElementById("controlBackBtn");
+const ownerBtn = document.getElementById("ownerBtn");
+const deleteBtn = document.getElementById("deleteBtn");
+const controlBotName = document.getElementById("controlBotName");
+const ownerBackBtn = document.getElementById("ownerBackBtn");
+const giveMyself = document.getElementById("giveMyself");
+const giveOwner = document.getElementById("giveOwner");
+const telegramIdInput = document.getElementById("telegramIdInput");
+
 let currentUser = null;
+let selectedBot = null;
 let errorTimeout = null;
 let activeNotification = null;
 let notificationHideTimeout = null;
@@ -39,19 +50,30 @@ card.addEventListener("mouseleave", () => {
 // Навигация между меню
 // ======================
 continueBtn.addEventListener("click", () => {
-    card.classList.remove("active-main", "active-bot");
+    card.classList.remove("active-main", "active-bot", "active-control", "active-owner");
     card.classList.add("active-code");
 });
 
 backBtn.addEventListener("click", () => {
-    card.classList.remove("active-code", "active-bot");
+    card.classList.remove("active-code", "active-bot", "active-control", "active-owner");
     card.classList.add("active-main");
 });
 
 botBackBtn.addEventListener("click", () => {
-    card.classList.remove("active-bot");
+    card.classList.remove("active-bot", "active-control", "active-owner");
     card.classList.add("active-code");
     resetBotSelection();
+});
+
+controlBackBtn.addEventListener("click", () => {
+    card.classList.remove("active-control", "active-owner");
+    card.classList.add("active-bot");
+});
+
+ownerBackBtn.addEventListener("click", () => {
+    card.classList.remove("active-owner");
+    card.classList.add("active-control");
+    telegramIdInput.value = "";
 });
 
 // ======================
@@ -67,10 +89,8 @@ verifyBtn.addEventListener("click", () => {
                 currentUser = data[code];
                 showNotification("Выполнен вход в систему", `Пользователь: ${currentUser.name}`);
 
-                // Сразу подготавливаем меню ботов
                 showBotMenu(currentUser);
                 
-                // Потом убираем active-code и добавляем active-bot
                 setTimeout(() => {
                     card.classList.remove("active-code");
                     card.classList.add("active-bot");
@@ -121,7 +141,6 @@ function showBotMenu(user) {
     botButtons.innerHTML = "";
     resetBotSelection();
 
-    // Создаём кнопки ботов
     if (user.access_siroga === "yes") {
         const btn = document.createElement("button");
         btn.className = "btn siroga";
@@ -135,7 +154,6 @@ function showBotMenu(user) {
         botButtons.appendChild(btn);
     }
 
-    // Обработчики кнопок выбора бота
     const allBotBtns = botButtons.querySelectorAll(".btn");
     allBotBtns.forEach(btn => {
         btn.addEventListener("click", () => {
@@ -145,19 +163,80 @@ function showBotMenu(user) {
         });
     });
 
-    // Кнопка Продолжить в меню ботов
     botContinueBtn.onclick = () => {
         const selected = botButtons.querySelector(".btn.selected");
         if (!selected) {
             showError("Выберите бота прежде чем продолжить!");
             return;
         }
-        showNotification("Выбран бот", selected.innerText);
-        console.log("Выбран бот:", selected.innerText);
+        selectedBot = selected.innerText;
+        showNotification("Выбран бот", selectedBot);
+        
+        // Показываем меню управления
+        controlBotName.innerText = selectedBot;
+        setTimeout(() => {
+            card.classList.remove("active-bot");
+            card.classList.add("active-control");
+        }, 50);
     };
 }
+
 // ======================
-// Уведомления стекло
+// Меню управления ботом
+// ======================
+ownerBtn.addEventListener("click", () => {
+    card.classList.remove("active-control");
+    card.classList.add("active-owner");
+    telegramIdInput.focus();
+});
+
+deleteBtn.addEventListener("click", () => {
+    showError("Функция удаления БД в разработке!");
+});
+
+// ======================
+// Выдача прав владельца
+// ======================
+giveMyself.addEventListener("click", () => {
+    const telegramUrl = `https://t.me/bot_address?start=setownerID_me`;
+    window.open(telegramUrl, "_blank");
+    
+    showNotification("Переход в Telegram", "Следуйте инструкциям в боте");
+    
+    setTimeout(() => {
+        card.classList.remove("active-owner");
+        card.classList.add("active-control");
+        telegramIdInput.value = "";
+    }, 1000);
+});
+
+giveOwner.addEventListener("click", () => {
+    const telegramId = telegramIdInput.value.trim();
+    
+    if (!telegramId) {
+        showError("Введите TelegramID!");
+        return;
+    }
+    
+    if (!/^\d+$/.test(telegramId)) {
+        showError("TelegramID должен содержать только цифры!");
+        return;
+    }
+    
+    const telegramUrl = `https://t.me/bot_address?start=setownerID_${telegramId}`;
+    window.open(telegramUrl, "_blank");
+    
+    showNotification("Переход в Telegram", `ID: ${telegramId}`);
+    
+    setTimeout(() => {
+        card.classList.remove("active-owner");
+        card.classList.add("active-control");
+        telegramIdInput.value = "";
+    }, 1000);
+});
+
+// ======================
+// Уведомления
 // ======================
 function showNotification(title, message) {
     if (activeNotification) {
